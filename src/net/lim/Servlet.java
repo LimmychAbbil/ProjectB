@@ -1,5 +1,7 @@
 package net.lim;
 
+import net.lim.strategies.Strategy;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.xml.ws.spi.http.HttpContext;
@@ -11,13 +13,18 @@ import java.io.PrintWriter;
  */
 public class Servlet extends javax.servlet.http.HttpServlet {
 
+    Strategy strategy;
+
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
+    }
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         System.out.println("Hello from servlet");
 
         HttpSession session = request.getSession();
         ServletContext context = request.getServletContext();
         String name = request.getParameter("name");
-        if (name != null && (!name.isEmpty()) ) {
+        if (!(name == null || name.isEmpty())) {
             session.setAttribute("name", name);
             context.setAttribute("name", name);
             System.out.println("Session attribute \"name\" is set");
