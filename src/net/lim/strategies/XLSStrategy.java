@@ -4,6 +4,8 @@ package net.lim.strategies;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Limmy on 09.01.2017.
@@ -17,10 +19,21 @@ public class XLSStrategy implements Strategy{
      */
 
     private static final String PATHTOFILE = "C:/test.xlsx";
+    private static final Logger XLSLogger = Logger.getLogger(XLSStrategy.class.getName());
     public XLSStrategy() throws IOException {
         File sheetFile = new File(PATHTOFILE);
         if (sheetFile.exists() && sheetFile.isFile()) {
-            //TODO READ FROM FILE USING INPUT STREAM
+            FileInputStream fileInputStream = new FileInputStream(sheetFile);
+            XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
+            fileInputStream.close();
+
+            if (workbook.getNumberOfSheets() != 0) {
+                XSSFSheet sheet = workbook.getSheetAt(0);
+                XLSLogger.log(Level.INFO, "Sheet loads sucessfully, number of rows is " + sheet.getPhysicalNumberOfRows());
+            }
+            else {
+                XSSFSheet sheet = workbook.createSheet("Users");
+            }
         }
         else {
             XSSFWorkbook workbook = new XSSFWorkbook();
@@ -43,7 +56,6 @@ public class XLSStrategy implements Strategy{
     }
     public static void main(String[] args) throws FileNotFoundException, IOException{
         new XLSStrategy();
-        System.out.println("DONE");
 
     }
     public void create() {
