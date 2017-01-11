@@ -6,13 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ProjectB" />
-        <module name="ServletsTomCatExample" />
+        <module name="net.lim.ProjectB" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ProjectB" target="1.5" />
-      <module name="ServletsTomCatExample" target="1.5" />
+      <module name="net.lim.ProjectB" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
