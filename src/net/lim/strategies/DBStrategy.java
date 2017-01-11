@@ -4,7 +4,7 @@ package net.lim.strategies;
  * Created by Limmy on 09.01.2017.
  */
 public class DBStrategy implements Strategy {
-    public void create() {
+    public void create(String name) {
 
     }
 
@@ -12,7 +12,7 @@ public class DBStrategy implements Strategy {
         return 0;
     }
 
-    public int write(String name) {
-        return 0;
+    public void write(String name) {
+
     }
 }
