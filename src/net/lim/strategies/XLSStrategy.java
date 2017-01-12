@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  */
 public class XLSStrategy implements Strategy{
 
-
+    //TODO make this class as a Singleton
 
     private static final String PATHTOFILE = "C:/test.xlsx";
     private static final Logger XLSLogger = Logger.getLogger(XLSStrategy.class.getName());
@@ -53,7 +53,8 @@ public class XLSStrategy implements Strategy{
     }
     public static void main(String[] args) throws FileNotFoundException, IOException{
         XLSStrategy test = new XLSStrategy();
-        System.out.println(test.read("TEST USER"));
+        System.out.println(test.read("MISTER"));
+        test.update("MISTER");
         System.out.println(test.read("MISTER"));
 
     }
@@ -83,14 +84,27 @@ public class XLSStrategy implements Strategy{
             }
         }
         else {
-            XLSLogger.severe("Can not read the name from file, return null");
+            XLSLogger.severe("Can not read the name from file, return 0");
         }
 
         return 0;
     }
 
-    public void write(String name) {
-
+    public void update(String name) {
+        XSSFSheet users = workbook.getSheetAt(0);
+        if ((users != null) && users.getSheetName().equals("Users")) {
+            for (int i = 1; i < users.getPhysicalNumberOfRows(); i++) {
+                XSSFRow row = users.getRow(i);
+                if (row.getCell(0).getStringCellValue().equals(name)) {
+                    row.getCell(1).setCellValue(row.getCell(1).getNumericCellValue() + 1);
+                    break;
+                }
+            }
+            writeFile();
+        }
+        else {
+            XLSLogger.severe("Can not read the name from file, return 0");
+        }
     }
 
     private void writeFile() {

@@ -12,7 +12,7 @@ public class DBStrategy implements Strategy {
         return 0;
     }
 
-    public void write(String name) {
+    public void update(String name) {
 
     }
 }

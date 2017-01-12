@@ -6,6 +6,6 @@ package net.lim.strategies;
 public interface Strategy {
     void create(String name);
     int read(String name);
-    void write(String name);
-    //Update isn't necessary because of the same realization of write.
+    void update(String name);
+    //Delete is not necessary.
 }
