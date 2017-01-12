@@ -1,7 +1,9 @@
 package net.lim.strategies;
 
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.*;
@@ -13,13 +15,17 @@ import java.util.logging.Logger;
  */
 public class XLSStrategy implements Strategy{
 
-    //TODO make this class as a Singleton
-
     private static final String PATHTOFILE = "C:/test.xlsx";
     private static final Logger XLSLogger = Logger.getLogger(XLSStrategy.class.getName());
     private XSSFWorkbook workbook;
+    private static XLSStrategy instance;
 
-    public XLSStrategy() throws IOException {
+    public static synchronized XLSStrategy getInstance() throws IOException {
+        if (instance == null) return new XLSStrategy();
+        else return instance;
+    }
+
+    private XLSStrategy() throws IOException {
         File sheetFile = new File(PATHTOFILE);
         if (sheetFile.exists() && sheetFile.isFile()) {
             FileInputStream fileInputStream = new FileInputStream(sheetFile);
@@ -38,6 +44,8 @@ public class XLSStrategy implements Strategy{
             workbook = new XSSFWorkbook();
             OutputStream os = new FileOutputStream(sheetFile);
             XSSFSheet sheet = workbook.createSheet("Users");
+            sheet.setColumnWidth(0,15220);
+            sheet.setColumnWidth(1, 15220);
 
             XSSFRow title = sheet.createRow(0);
             XSSFCell userTitleCell = title.createCell(0);
@@ -45,20 +53,29 @@ public class XLSStrategy implements Strategy{
             XSSFCell numberTitleCell = title.createCell(1);
             numberTitleCell.setCellValue("Numbers of attempts");
 
-            //TODO set title style
+            XSSFCellStyle titleStyle = workbook.createCellStyle();
+            titleStyle.setBorderBottom(BorderStyle.MEDIUM);
+            titleStyle.setFillForegroundColor(new XSSFColor(java.awt.Color.GREEN));
+            titleStyle.setFillPattern(FillPatternType.ALT_BARS);
+
+
+            userTitleCell.setCellStyle(titleStyle);
+            numberTitleCell.setCellStyle(titleStyle);
 
             this.writeFile();
         }
 
     }
-    public static void main(String[] args) throws FileNotFoundException, IOException{
-        XLSStrategy test = new XLSStrategy();
+    public static void main(String[] args) throws IOException{
+        XLSStrategy test = XLSStrategy.getInstance();
+        test.create("MISTER");
         System.out.println(test.read("MISTER"));
         test.update("MISTER");
         System.out.println(test.read("MISTER"));
 
     }
     public void create(String name) {
+        //TODO check up the sheet of existing of this User
         XSSFSheet sheet = workbook.getSheet("Users");
         XSSFRow row = sheet.createRow(sheet.getPhysicalNumberOfRows());
 
@@ -91,6 +108,7 @@ public class XLSStrategy implements Strategy{
     }
 
     public void update(String name) {
+        //TODO check up the sheet of NOT existing of this User
         XSSFSheet users = workbook.getSheetAt(0);
         if ((users != null) && users.getSheetName().equals("Users")) {
             for (int i = 1; i < users.getPhysicalNumberOfRows(); i++) {
