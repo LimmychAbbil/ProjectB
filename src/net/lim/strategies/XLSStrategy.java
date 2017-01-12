@@ -53,7 +53,8 @@ public class XLSStrategy implements Strategy{
     }
     public static void main(String[] args) throws FileNotFoundException, IOException{
         XLSStrategy test = new XLSStrategy();
-        test.create("TEST USER");
+        System.out.println(test.read("TEST USER"));
+        System.out.println(test.read("MISTER"));
 
     }
     public void create(String name) {
@@ -72,6 +73,19 @@ public class XLSStrategy implements Strategy{
     }
 
     public int read(String name) {
+        XSSFSheet users = workbook.getSheetAt(0);
+        if ((users != null) && users.getSheetName().equals("Users")) {
+            for (int i = 1; i < users.getPhysicalNumberOfRows(); i++) {
+                XSSFRow row = users.getRow(i);
+                if (row.getCell(0).getStringCellValue().equals(name)) {
+                    return (int)row.getCell(1).getNumericCellValue();
+                }
+            }
+        }
+        else {
+            XLSLogger.severe("Can not read the name from file, return null");
+        }
+
         return 0;
     }
 
@@ -84,11 +98,16 @@ public class XLSStrategy implements Strategy{
             workbook.write(os);
             os.flush();
             os.close();
-            workbook.close();
         }
         catch (IOException e) {
             XLSLogger.log(Level.WARNING, "Sheet File wasn't written.");
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        workbook.close();
     }
 }
