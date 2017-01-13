@@ -15,14 +15,14 @@ import java.util.logging.Logger;
  */
 public class XLSStrategy implements Strategy{
 
-    private static final String PATHTOFILE = "C:/test.xlsx";
+    private static final String PATHTOFILE = "./res/UsersSheet.xlsx";
     private static final Logger XLSLogger = Logger.getLogger(XLSStrategy.class.getName());
     private XSSFWorkbook workbook;
     private static XLSStrategy instance;
 
     public static synchronized XLSStrategy getInstance() throws IOException {
-        if (instance == null) return new XLSStrategy();
-        else return instance;
+        if (instance == null) instance = new XLSStrategy();
+        return instance;
     }
 
     private XLSStrategy() throws IOException {
@@ -63,19 +63,13 @@ public class XLSStrategy implements Strategy{
             numberTitleCell.setCellStyle(titleStyle);
 
             this.writeFile();
+
+            XLSLogger.log(Level.INFO, ".xlsx file created successfully");
         }
 
     }
-    public static void main(String[] args) throws IOException{
-        XLSStrategy test = XLSStrategy.getInstance();
-        test.create("MISTER");
-        System.out.println(test.read("MISTER"));
-        test.update("MISTER");
-        System.out.println(test.read("MISTER"));
 
-    }
     public void create(String name) {
-        //TODO check up the sheet of existing of this User
         XSSFSheet sheet = workbook.getSheet("Users");
         XSSFRow row = sheet.createRow(sheet.getPhysicalNumberOfRows());
 
@@ -108,7 +102,6 @@ public class XLSStrategy implements Strategy{
     }
 
     public void update(String name) {
-        //TODO check up the sheet of NOT existing of this User
         XSSFSheet users = workbook.getSheetAt(0);
         if ((users != null) && users.getSheetName().equals("Users")) {
             for (int i = 1; i < users.getPhysicalNumberOfRows(); i++) {
