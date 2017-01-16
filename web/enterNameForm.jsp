@@ -14,9 +14,10 @@
     <title>Please, Enter your name</title>
 </head>
 <body>
-    <form action="/first" method="post" name="param"><%=getServletConfig().getInitParameter("test") %> Enter your name
+    <form action="/first" method="post" name="param">Enter your name
     <input name="name" type="text">
-    <input type="submit"></form>
+    <input type="submit">
+    </form>
 
     
 </body>

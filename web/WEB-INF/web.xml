@@ -14,15 +14,20 @@
 
     <servlet>
         <servlet-name>enterName</servlet-name>
-        <init-param>
-            <param-name>test</param-name>
-            <param-value>User</param-value>
-        </init-param>
         <jsp-file>/enterNameForm.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>result</servlet-name>
+        <jsp-file>/result.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>enterName</servlet-name>
-        <url-pattern>/enterNameForm.jsp</url-pattern>
+        <url-pattern>/enterName</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>result</servlet-name>
+        <url-pattern>/result</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

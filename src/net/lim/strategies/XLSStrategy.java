@@ -27,6 +27,7 @@ public class XLSStrategy implements Strategy{
 
     private XLSStrategy() throws IOException {
         File sheetFile = new File(PATHTOFILE);
+        if (!sheetFile.getParentFile().exists()) new File(sheetFile.getParent()).mkdir();
         if (sheetFile.exists() && sheetFile.isFile()) {
             FileInputStream fileInputStream = new FileInputStream(sheetFile);
             workbook = new XSSFWorkbook(fileInputStream);
@@ -42,7 +43,6 @@ public class XLSStrategy implements Strategy{
         }
         else {
             workbook = new XSSFWorkbook();
-            OutputStream os = new FileOutputStream(sheetFile);
             XSSFSheet sheet = workbook.createSheet("Users");
             sheet.setColumnWidth(0,15220);
             sheet.setColumnWidth(1, 15220);

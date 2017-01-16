@@ -1,10 +1,13 @@
 package net.lim;
 
 import net.lim.strategies.Strategy;
+import net.lim.strategies.XLSStrategy;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.spi.http.HttpContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -13,30 +16,40 @@ import java.io.PrintWriter;
  */
 public class Servlet extends javax.servlet.http.HttpServlet {
 
-    Strategy strategy;
+    Strategy usersBase;
 
-    public void setStrategy(Strategy strategy) {
-        this.strategy = strategy;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        try {
+            usersBase = XLSStrategy.getInstance();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setUsersBase(Strategy usersBase) {
+        this.usersBase = usersBase;
     }
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        System.out.println("Hello from servlet");
 
         HttpSession session = request.getSession();
         ServletContext context = request.getServletContext();
         String name = request.getParameter("name");
-        if (!(name == null || name.isEmpty())) {
-            session.setAttribute("name", name);
-            context.setAttribute("name", name);
-            System.out.println("Session attribute \"name\" is set");
+
+        int attempts = usersBase.read(name);
+        if (attempts == 0) {
+            usersBase.create(name);
+        }
+        else {
+            usersBase.update(name);
         }
 
-        response.setContentType("text/html");
-        PrintWriter writer = response.getWriter();
-        writer.println("Your name maybe is " + name + "<br>");
-        writer.println ("The session name is " + (String) session.getAttribute("name")+ "<br>");
-        writer.println("Context attr \"name\" is " + (String) context.getAttribute("name") + "<br>");
-        writer.flush();
-        writer.close();
-
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/result");
+        request.setAttribute("userName", name);
+        request.setAttribute("attempts", attempts + 1);
+        dispatcher.forward(request, response);
     }
 }
