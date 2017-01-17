@@ -33,12 +33,12 @@
 
 
     <dependencies>
-    <!-- ADD A DEPENDENCY OF JDBC
-    <dependency>
-        <groupId></groupId>
-        <artifactId></artifactId>
-    </dependency>
-    -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>6.0.5</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>

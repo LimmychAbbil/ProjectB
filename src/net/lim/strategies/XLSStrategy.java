@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Created by Limmy on 09.01.2017.
  */
-public class XLSStrategy implements Strategy{
+public class XLSStrategy implements Strategy, Closeable {
 
     private static final String PATHTOFILE = "./res/UsersSheet.xlsx";
     private static final Logger XLSLogger = Logger.getLogger(XLSStrategy.class.getName());
@@ -130,6 +130,16 @@ public class XLSStrategy implements Strategy{
         }
     }
 
+    @Override
+    public void close() {
+        try {
+            workbook.close();
+        }
+        catch (IOException e) {
+            XLSLogger.log(Level.SEVERE, "Cannot close XLS file");
+            e.printStackTrace();
+        }
+    }
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
