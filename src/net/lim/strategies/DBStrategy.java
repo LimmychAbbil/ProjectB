@@ -37,12 +37,6 @@ public class DBStrategy implements Strategy, Closeable {
         return instance;
     }
 
-    public static void main(String[] args) throws SQLException{
-        DBStrategy strategy = getInstance();
-        System.out.println(strategy.read("MISTERX"));
-
-    }
-
     public void create(String name) {
         try (Statement createStatement = connection.createStatement()){
             createStatement.execute("INSERT INTO users (userName, attempts) VALUES (\"" + name + "\" , 1)");
@@ -68,11 +62,30 @@ public class DBStrategy implements Strategy, Closeable {
     }
 
     public void update(String name) {
-        
+        try (Statement updateStatement = connection.createStatement()) {
+            updateStatement.execute("UPDATE users\n" +
+                    "SET attempts = attempts + 1\n" +
+                    "WHERE userName = \"" + name + "\";");
+        }
+        catch (SQLException e) {
+            DBLogger.log(Level.WARNING, "Can't update information about user " + name);
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void close() throws IOException {
+        try {
+            connection.close();
+        }
+        catch (SQLException e) {
+            DBLogger.log(Level.SEVERE, "Can't close JDBC connection");
+            e.printStackTrace();
+        }
+    }
 
+    protected void finalize() throws Throwable {
+        super.finalize();
+        this.close();
     }
 }

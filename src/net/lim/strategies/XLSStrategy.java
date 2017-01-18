@@ -143,6 +143,6 @@ public class XLSStrategy implements Strategy, Closeable {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        workbook.close();
+        this.close();
     }
 }
