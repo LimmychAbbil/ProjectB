@@ -13,8 +13,12 @@
 <body>
 <!-- Send the information from XLS file.
 Use parameters from servlet.-->
-    <%
-        out.print(request.getAttribute("userName") + " " + request.getAttribute("attempts"));
-    %>
+<% String userName = (String) request.getAttribute("userName");
+   int attempts = (Integer) request.getAttribute("attempts");%>
+Dear <%out.print(userName);%>, it's the <%=attempts%>st your attempt to connect here.
+<% if (attempts == 1) out.print("<br> WELCOME!");%>
+<form method="get" action="/enterName">
+    <button><p align="center">Try one more time!</p></button>
+</form>
 </body>
 </html>

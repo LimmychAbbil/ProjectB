@@ -1,5 +1,6 @@
 package net.lim;
 
+import net.lim.strategies.DBStrategy;
 import net.lim.strategies.Strategy;
 import net.lim.strategies.XLSStrategy;
 
@@ -10,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 /**
  * Created by Limmy on 22.12.2016.
@@ -22,12 +24,20 @@ public class Servlet extends javax.servlet.http.HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+
+        //Try to connect to database, if it is not success, create XLS file on the application server
         try {
-            usersBase = XLSStrategy.getInstance();
+            setUsersBase(DBStrategy.getInstance());
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (SQLException e) {
+            try {
+                setUsersBase(XLSStrategy.getInstance());
+            }
+            catch (IOException ee) {
+                ee.printStackTrace();
+            }
         }
+
     }
 
     public void setUsersBase(Strategy usersBase) {
@@ -51,5 +61,10 @@ public class Servlet extends javax.servlet.http.HttpServlet {
         request.setAttribute("userName", name);
         request.setAttribute("attempts", attempts + 1);
         dispatcher.forward(request, response);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
     }
 }

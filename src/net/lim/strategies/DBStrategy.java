@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 /**
  * Created by Limmy on 09.01.2017.
  */
-public class DBStrategy implements Strategy, Closeable {
+public class DBStrategy implements Strategy {
 
 
     private static DBStrategy instance;
@@ -19,7 +19,7 @@ public class DBStrategy implements Strategy, Closeable {
     private final String user = "root";
     private final String password = "root";
 
-    private DBStrategy() {
+    private DBStrategy() throws SQLException {
         //connect to a database, if it isn't success, send information to controller (for using a XLSStrategy)
         try {
             connection = DriverManager.getConnection(url, user, password);
@@ -27,7 +27,7 @@ public class DBStrategy implements Strategy, Closeable {
         }
         catch (SQLException e) {
             DBLogger.log(Level.SEVERE, "Can't create a connection to the Database");
-            e.printStackTrace();
+            throw e;
         }
 
     }
@@ -74,7 +74,7 @@ public class DBStrategy implements Strategy, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         try {
             connection.close();
         }

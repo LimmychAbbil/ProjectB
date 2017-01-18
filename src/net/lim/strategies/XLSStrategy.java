@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Created by Limmy on 09.01.2017.
  */
-public class XLSStrategy implements Strategy, Closeable {
+public class XLSStrategy implements Strategy {
 
     private static final String PATHTOFILE = "./res/UsersSheet.xlsx";
     private static final Logger XLSLogger = Logger.getLogger(XLSStrategy.class.getName());
