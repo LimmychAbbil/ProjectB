@@ -45,8 +45,6 @@ public class Servlet extends javax.servlet.http.HttpServlet {
     }
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        ServletContext context = request.getServletContext();
         String name = request.getParameter("name");
 
         int attempts = usersBase.read(name);
@@ -66,5 +64,6 @@ public class Servlet extends javax.servlet.http.HttpServlet {
     @Override
     public void destroy() {
         super.destroy();
+        usersBase.close();
     }
 }
