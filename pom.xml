@@ -2,7 +2,7 @@
 
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <name>Maven Default Project</name>
+    <name>ProjectB</name>
     <build>
         <plugins>
             <plugin>
@@ -27,7 +27,7 @@
 
     <groupId>net.lim</groupId>
     <artifactId>net.lim.ProjectB</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-RELEASE</version>
     <packaging>war</packaging>
 
 
