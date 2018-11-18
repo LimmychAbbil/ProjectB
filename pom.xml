@@ -27,7 +27,7 @@
 
     <groupId>net.lim</groupId>
     <artifactId>net.lim.ProjectB</artifactId>
-    <version>1.0-RELEASE</version>
+    <version>1.1-RELEASE</version>
     <packaging>war</packaging>
 
 

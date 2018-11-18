@@ -1,5 +1,5 @@
 Hey!
-This features will definitely be realise:
+This features will definitely be realised:
     1) "Insert your name" form send POST query to a Servlet, which write name to the DataBase.
     2) DataBase contain information about all names which were written and the number of attempts.
     3) Servlet send this information to the user. Try to use script blocks OR JSTL into JSP page.
